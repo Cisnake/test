@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: atlas-mysql
+  namespace: atlas-udd
+  labels:
+    name: atlas-mysql
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: atlas-mysql
+      labels:
+        app: atlas-mysql
+    spec:
+      containers:
+        - image: mysql
+          name: atlas-mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: secret
+            - name: MYSQL_DATABASE
+              value: sonar
+            - name: MYSQL_USER
+              value: sonar
+            - name: MYSQL_PASSWORD
+              value: sonar
+          ports:
+            - containerPort: 3306
+              name: mysqlport
+          volumeMounts:
+            - name: mysql-lib
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-lib
+          emptyDir: {}

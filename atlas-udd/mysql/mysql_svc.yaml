@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlas-mysql
+  namespace: atlas-udd
+  labels:
+    name: atlas-mysql
+spec:
+  type: NodePort
+  ports:
+    - port: 3306 
+      targetPort: 3306
+  selector:
+    app: atlas-mysql 

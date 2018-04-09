@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+   name: atlas-nexus 
+   namespace: atlas-udd
+   labels:
+      name: atlas-nexus
+spec:
+   type: NodePort
+   ports:
+      - port: 18081
+        targetPort: 8081
+        protocol: TCP
+        name: http
+      - port: 5000
+        targetPort: 5000
+        protocol: TCP
+        name: docker 
+   selector:
+      app: atlas-nexus

@@ -1,0 +1,38 @@
+FROM jenkins/jnlp-slave:alpine
+
+### MAINTAINER atlas-team (email)
+
+### get rid of admin password setup
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+
+### automatically installing plugins
+#COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+#RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+
+USER root
+### create folders for maven & JDK
+RUN mkdir /usr/share/downloads && \
+        mkdir /tools
+
+##RUN curl "http://mirror.vorboss.net/apache/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz" > /usr/share/jenkins/ref/downloads/apache-maven-3.5.2-bin.tar.gz
+##RUN curl "http://ftp.osuosl.org/pub/funtoo/distfiles/oracle-java/jdk-8u144-linux-x64.tar.gz" > /usr/share/jenkins/ref/downloads/jdk-8u144-linux-x64.tar.gz
+COPY apache-maven-3.5.2-bin.tar.gz /usr/share/downloads/apache-maven-3.5.2-bin.tar.gz
+COPY jdk-8u144-linux-x64.tar.gz /usr/share/downloads/jdk-8u144-linux-x64.tar.gz
+COPY docker-18.03.0-ce.tgz /usr/share/downloads/docker-18.03.0-ce.tgz
+COPY kubectl /usr/bin/kubectl
+
+RUN cd /usr/share/downloads && \
+        tar xzvf jdk-8u144-linux-x64.tar.gz -C /tools && \
+        tar xzvf apache-maven-3.5.2-bin.tar.gz -C /tools && \
+        tar xzvf docker-18.03.0-ce.tgz -C /tools
+RUN chmod 777 /usr/bin/kubectl
+RUN cp /tools/docker/* /usr/bin/
+
+### copy maven settings file
+RUN cd /tools && \
+        mkdir -m 777 maven_repository
+COPY settings.xml /tools/apache-maven-3.5.2/conf/settings.xml
+
+
+USER jenkins
+COPY groovy/* /usr/share/jenkins/ref/init.groovy.d/

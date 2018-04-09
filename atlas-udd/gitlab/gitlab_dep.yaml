@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: atlas-gitlab
+  namespace: atlas-udd
+  labels:
+    name: atlas-gitlab
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: atlas-gitlab
+      labels:
+        app: atlas-gitlab
+    spec:
+      containers:
+        - image: atlas_udd/gitlab:1.0
+          name: atlas-gitlab
+          ports:
+            - containerPort: 80
+              name: gitlabport1
+            - containerPort: 443
+              name: gitlabport2
+            - containerPort: 22
+              name: gitlabport3            
+          volumeMounts:
+            - name: gitlab-config
+              mountPath: /etc/gitlab
+            - name: gitlab-logs
+              mountPath: /var/log/gitlab
+            - name: gitlab-data
+              mountPath: /var/opt/gitlab
+      volumes:
+        - name: gitlab-config
+          emptyDir: {}
+        - name: gitlab-logs
+          emptyDir: {}
+        - name: gitlab-data
+          emptyDir: {}

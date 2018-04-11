@@ -14,23 +14,31 @@ spec:
         app: atlas-mysql
     spec:
       containers:
-        - image: mysql
+        - image: atlas_udd/mysql:1.0 
           name: atlas-mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: secret
+              valueFrom:
+                 secretKeyRef:
+                    name: atlas-bd-passwords
+                    key: pwd-root
             - name: MYSQL_DATABASE
               value: sonar
             - name: MYSQL_USER
               value: sonar
-            - name: MYSQL_PASSWORD
-              value: sonar
+            - name: MYSQL_PASSWORD                                                               
+              valueFrom:
+                 secretKeyRef:     
+                    name: atlas-bd-passwords
+                    key: pwd-sonar
           ports:
             - containerPort: 3306
               name: mysqlport
           volumeMounts:
-            - name: mysql-lib
+            - name: v-mysql-lib
               mountPath: /var/lib/mysql
       volumes:
-        - name: mysql-lib
-          emptyDir: {}
+        - name: v-mysql-lib
+          hostPath:
+            path: /volumes/mysql 
+            type: DirectoryOrCreate        

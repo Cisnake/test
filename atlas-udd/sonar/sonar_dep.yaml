@@ -18,17 +18,20 @@ spec:
           name: atlas-sonar
           env:
             - name: SONARQUBE_JDBC_USERNAME
-              value: sonar
+              value: sonar                                                                   
             - name: SONARQUBE_JDBC_PASSWORD
-              value: sonar
+              valueFrom:
+                 secretKeyRef:
+                    name: atlas-bd-passwords
+                    key: pwd-sonar                                                                                       
             - name: SONARQUBE_JDBC_URL
               value: jdbc:mysql://atlas-mysql:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance
           ports:
             - containerPort: 9000
               name: sonarport
           volumeMounts:
-            - name: sonar-home-data
+            - name: v-sonar-home-data
               mountPath: /opt/sonarqube/data
       volumes:
-        - name: sonar-home-data
+        - name: v-sonar-home-data
           emptyDir: {}

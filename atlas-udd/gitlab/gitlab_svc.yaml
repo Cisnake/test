@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlas-gitlab
+  namespace: atlas-udd
+  labels:
+    name: atlas-gitlab
+spec:
+  type: NodePort
+  ports:
+    - port: 10080
+      targetPort: 80
+      name: gitlabport1
+    - port: 10443
+      targetPort: 443
+      name: gitlabport2
+    - port: 10022
+      targetPort: 22
+      name: gitlabport3                                                     
+  selector:
+    app: atlas-gitlab

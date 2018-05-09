@@ -33,7 +33,7 @@ try {
     	kubernetesTemplate.setRetentionTimeout(k8sPodTemplate.RETENTION_TIMEOUT)
     	kubernetesTemplate.setConnectTimeout(k8sPodTemplate.CONNECT_TIMEOUT)
     	kubernetesTemplate.setReadTimeout(k8sPodTemplate.READ_TIMEOUT)
-     
+        kubernetesTemplate.
       	println "set templates"
         // kubernetesTemplate.templates.clear()
 
@@ -41,7 +41,8 @@ try {
         	def podTemplate = new PodTemplate()
         	podTemplate.setLabel(podTemplateConfig.LABEL)
 			podTemplate.setName(podTemplateConfig.NAME)
-          	podTemplate.setNameSpace(podTemplateConfig.NAMESPACE)  
+          	podTemplate.setNamespace(podTemplateConfig.NAMESPACE)
+         	podTemplate.setMaxRequestsPerHostStr(podTemplateConfig.MAX_REQUESTS_PER_HOST_STR)
           
           	// Containers
         	if (podTemplateConfig.CONTAINER_TEMPLATE) {
@@ -56,6 +57,11 @@ try {
             		ct.setWorkingDir(ctr.WORKING_DIR)
             		ct.setArgs(ctr.ARGS)
             		ct.setCommand(ctr.COMMAND)
+                  		      INITIAL_DELAY_SECONDS: 0
+		      TIMEOUT_SECONDS: 0
+		      FAILURE_THRESHOLD: 0
+		      PERIOD_SECONDS: 0
+		      SUCCESS_THRESHOLD: 0
                   	ctrTempaltes << ct
                 }
               	podTemplate.setContainers(ctrTempaltes)
@@ -65,7 +71,8 @@ try {
         	if (podTemplateConfig.VOLUMES) {
             	def volumes = []
 				podTemplateConfig.VOLUMES.each { volume ->
-                	if (volume.type == 'HostPathVolume') {
+                  	println "volume "
+                	if (volume.TYPE == 'HostPathVolume') {
                     	volumes << new HostPathVolume(volume.HOST_PATH, volume.MOUNT_PATH)
 					}
                 }

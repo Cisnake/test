@@ -33,18 +33,52 @@ try {
     	kubernetesTemplate.setRetentionTimeout(k8sPodTemplate.RETENTION_TIMEOUT)
     	kubernetesTemplate.setConnectTimeout(k8sPodTemplate.CONNECT_TIMEOUT)
     	kubernetesTemplate.setReadTimeout(k8sPodTemplate.READ_TIMEOUT)
-
-      	jenkins.clouds.add(kubernetesTemplate)
-        println "cloud added: ${k8sPodTemplate.NAME}"
-      
+     
       	println "set templates"
         // kubernetesTemplate.templates.clear()
 
     	k8sPodTemplate.POD_TEMPLATES.each { podTemplateConfig ->
         	def podTemplate = new PodTemplate()
-        	podTemplate.setLabel(podTemplateConfig.label)
-			podTemplate.setName(podTemplateConfig.name)  
-        }
-
-           
+        	podTemplate.setLabel(podTemplateConfig.LABEL)
+			podTemplate.setName(podTemplateConfig.NAME)
+          	podTemplate.setNameSpace(podTemplateConfig.NAMESPACE)  
+          
+          	// Containers
+        	if (podTemplateConfig.CONTAINER_TEMPLATE) {
+            	def ctrTempaltes = []
+				podTemplateConfig.CONTAINER_TEMPLATE.each { ctr ->
+                	println "containerTemplate: ${ctr.NAME}"
+                	ContainerTemplate ct = new ContainerTemplate(ctr.NAME, ctr.IMAGE)
+                    
+                    ct.setAlwaysPullImage(ctr.ALWAYS_PULL_IMAGE)
+            		ct.setPrivileged(ctr.PRIVILIGIED)
+            		ct.setTtyEnabled(ctr.TTY_ENABLED)
+            		ct.setWorkingDir(ctr.WORKING_DIR)
+            		ct.setArgs(ctr.ARGS)
+            		ct.setCommand(ctr.COMMAND)
+                  	ctrTempaltes << ct
+                }
+              	podTemplate.setContainers(ctrTempaltes)
+            }
+          
+          	// Volumes
+        	if (podTemplateConfig.VOLUMES) {
+            	def volumes = []
+				podTemplateConfig.VOLUMES.each { volume ->
+                	if (volume.type == 'HostPathVolume') {
+                    	volumes << new HostPathVolume(volume.HOST_PATH, volume.MOUNT_PATH)
+					}
+                }
+              	podTemplate.setVolumes(volumes)
+            }
+          	kubernetesTemplate.templates << podTemplate
+		}
+		jenkins.clouds.add(kubernetesTemplate)
+    	println "cloud added: ${k8sPodTemplate.NAME}"
     }
+  	
+	println("Configuring k8s completed")
+} finally {
+	//if we don't null kc, jenkins will try to serialise k8s objects and that will fail, so we won't see actual error
+  	kubernetesTemplate = null
+}

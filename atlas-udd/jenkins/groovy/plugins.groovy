@@ -12,7 +12,7 @@ import org.yaml.snakeyaml.Yaml
 // ConfigObject conf = new ConfigSlurper().parse(new File(System.getenv("JENKINS_HOME") + '/config.yaml').text)
 
 
-String configText = new File(System.getenv("JENKINS_HOME") + '/config.yaml').text
+String configText = new File('config.yaml').text
 Yaml yaml = new Yaml()
 properties = yaml.load(configText)
 

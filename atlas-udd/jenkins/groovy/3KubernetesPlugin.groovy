@@ -58,10 +58,10 @@ try {
             		ct.setArgs(ctr.ARGS)
             		ct.setCommand(ctr.COMMAND)
                   		      INITIAL_DELAY_SECONDS: 0
-		      TIMEOUT_SECONDS: 0
-		      FAILURE_THRESHOLD: 0
-		      PERIOD_SECONDS: 0
-		      SUCCESS_THRESHOLD: 0
+		     // TIMEOUT_SECONDS: 0
+		     // FAILURE_THRESHOLD: 0
+		     // PERIOD_SECONDS: 0
+		     // SUCCESS_THRESHOLD: 0
                   	ctrTempaltes << ct
                 }
               	podTemplate.setContainers(ctrTempaltes)

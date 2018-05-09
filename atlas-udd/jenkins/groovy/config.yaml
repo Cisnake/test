@@ -1,0 +1,51 @@
+GLOBAL_TOOLS:
+    JAVAS:
+        - NAME: 'jdk8'
+          HOME: '/tools/jdk1.8.0_444'
+    MAVENS:
+        - NAME: 'maven3'
+          HOME: '/tools/apache-maven-3.5.2'
+
+PLUGINS:
+    # Kubernetes Cloud List
+    KUBERNETES:
+        - NAME: 'Kubernetes'
+          SERVER_URL: 'https://10.0.2.15:6443'
+          SKIP_TLS_VERIFY: false 
+          NAMESPACE: 
+          JENKINS_URL: 'http://atlas-jenkins:18080'
+          CREDENTIALS_ID:
+          CONTAINER_CAP_STR: '10'
+          RETENTION_TIMEOUT: 5
+          CONNECT_TIMEOUT: 0
+          READ_TIMEOUT: 0
+          MAX_REQUESTS_PER_HOST_STR: 32
+          
+          # Kubernetes Pod Template list 
+          POD_TEMPLATES:
+              - NAME:  'jenkins-slave'
+                NAMESPACE: 'atlas-udd'
+                LABEL: 'jenkins-slave'
+                # Container Template list
+                CONTAINER_TEMPLATE:
+                    - NAME: 'jenkins-slave'
+                      IMAGE: 'jenkins/jnlp-slave:alpine'
+                      ALWAYS_PULL_IMAGE: false
+                      WORKING_DIR: '/home/jenkins'
+                      COMMAND: '/bin/sh-c'
+                      ARGS: 'cat'
+                      TTY_ENABLED: true
+                      PRIVILIGIED: false
+		      INITIAL_DELAY_SECONDS: 0
+		      TIMEOUT_SECONDS: 0
+		      FAILURE_THRESHOLD: 0
+		      PERIOD_SECONDS: 0
+		      SUCCESS_THRESHOLD: 0
+                # Volumes list
+                VOLUMES:        
+                    - TYPE: 'HostPathVolume'
+                      MOUNT_PATH: '/var/run/docker.sock'
+                      HOST_PATH: '/var/run/docker.sock'
+                    - TYPE: 'HostPathVolume'
+                      MOUNT_PATH: '/tools/maven_repository'
+                      HOST_PATH: '/tools/maven_repository'

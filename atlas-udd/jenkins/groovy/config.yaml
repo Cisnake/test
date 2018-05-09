@@ -36,11 +36,11 @@ PLUGINS:
                       ARGS: 'cat'
                       TTY_ENABLED: true
                       PRIVILIGIED: false
-		      INITIAL_DELAY_SECONDS: 0
-		      TIMEOUT_SECONDS: 0
-		      FAILURE_THRESHOLD: 0
-		      PERIOD_SECONDS: 0
-		      SUCCESS_THRESHOLD: 0
+                      INITIAL_DELAY_SECONDS: 0
+                      TIMEOUT_SECONDS: 0
+                      FAILURE_THRESHOLD: 0
+                      PERIOD_SECONDS: 0
+                      SUCCESS_THRESHOLD: 0
                 # Volumes list
                 VOLUMES:        
                     - TYPE: 'HostPathVolume'
@@ -49,3 +49,7 @@ PLUGINS:
                     - TYPE: 'HostPathVolume'
                       MOUNT_PATH: '/tools/maven_repository'
                       HOST_PATH: '/tools/maven_repository'
+    SONARS:
+        - NAME: 'sonar'
+          SERVER_URL: 'http://atlas-sonar:19000'
+

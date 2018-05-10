@@ -19,7 +19,7 @@ PLUGINS:
           RETENTION_TIMEOUT: 5
           CONNECT_TIMEOUT: 0
           READ_TIMEOUT: 0
-          MAX_REQUESTS_PER_HOST_STR: 32
+          MAX_REQUESTS_PER_HOST_STR: '32'
           
           # Kubernetes Pod Template list 
           POD_TEMPLATES:

@@ -12,7 +12,7 @@ import org.yaml.snakeyaml.Yaml
 // ConfigObject conf = new ConfigSlurper().parse(new File(System.getenv("JENKINS_HOME") + '/config.yaml').text)
 
 
-String configText = new File('config.yaml').text
+String configText = new File('/tmp/config.yaml').text
 Yaml yaml = new Yaml()
 properties = yaml.load(configText)
 
@@ -33,7 +33,7 @@ try {
     	kubernetesTemplate.setRetentionTimeout(k8sPodTemplate.RETENTION_TIMEOUT)
     	kubernetesTemplate.setConnectTimeout(k8sPodTemplate.CONNECT_TIMEOUT)
     	kubernetesTemplate.setReadTimeout(k8sPodTemplate.READ_TIMEOUT)
-        kubernetesTemplate.
+        kubernetesTemplate.setMaxRequestsPerHostStr(k8sPodTemplate.MAX_REQUESTS_PER_HOST_STR)
       	println "set templates"
         // kubernetesTemplate.templates.clear()
 
@@ -42,7 +42,7 @@ try {
         	podTemplate.setLabel(podTemplateConfig.LABEL)
 			podTemplate.setName(podTemplateConfig.NAME)
           	podTemplate.setNamespace(podTemplateConfig.NAMESPACE)
-         	podTemplate.setMaxRequestsPerHostStr(podTemplateConfig.MAX_REQUESTS_PER_HOST_STR)
+         	//podTemplate.setMaxRequestsPerHostStr(podTemplateConfig.MAX_REQUESTS_PER_HOST_STR)
           
           	// Containers
         	if (podTemplateConfig.CONTAINER_TEMPLATE) {

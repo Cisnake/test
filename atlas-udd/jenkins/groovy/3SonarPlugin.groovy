@@ -5,7 +5,7 @@ import hudson.tools.*
 import org.yaml.snakeyaml.Yaml
 
 // String configText = new File(System.getenv("JENKINS_HOME") + '/config.yaml').text
-String configText = new File('config.yaml').text
+String configText = new File('/tmp/config.yaml').text
 Yaml yaml = new Yaml()
 properties = yaml.load(configText)
 try {

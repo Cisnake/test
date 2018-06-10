@@ -1,1 +1,17 @@
-# POC-Atlas
+- Docker version: 18.03.1-ce
+- Kubernetes version: v1.10.2
+- MAJ dns pod /etc/resolv.conf for internet issue
+- nqq editor
+- Ingress
+- Dashboard
+- Projet cloné et git configuré
+- pull images : mysql, postgres, sonar, nexus, gitlab, jenkins
+- docker tag images atlas_udd/xxx1.0
+- /etc/hosts
+- taint master kubectl taint nodes --all node-role.kubernetes.io/master-
+- GitLab with interne DB
+- Nexus Repository
+- MySQL DB
+- SonarQube with MySQL DB 
+- SOnarQube with azure DB KO ==> ( Communication failure)
+- Jenkins Master & SLave + /etc/timezone + atlas-udd/default serviceAccount 
